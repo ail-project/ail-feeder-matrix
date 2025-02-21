@@ -91,7 +91,7 @@ def process_matrix_dict(matrix_dict):
     print(meta)
     ail.feed_json_item(data, meta, source, source_uuid)
 
-def create_json_from_file(f_path):
+def create_json_from_file(f_path, min_timestamp=0):
     messages = []
     with open(f_path, 'rb') as f:
         data = f.read()
@@ -112,12 +112,14 @@ def create_json_from_file(f_path):
                 chat_id = d[1].replace(b'    chat_id: ', b'', 1)[:-1].decode()
                 sender = d[2].replace(b'    sender_alias: ', b'', 1)[:-1].decode()
                 message = d[3].replace(b'    message: ', b'', 1)[:-2]
-                messages.append({'timestamp': timestamp, 'chat_id': chat_id, 'sender_alias': sender, 'message': message})
+                if timestamp > min_timestamp:
+                    messages.append({'timestamp': timestamp, 'chat_id': chat_id, 'sender_alias': sender, 'message': message})
                 # print({'timestamp': timestamp, 'chat_id': chat_id, 'sender_alias': sender, 'message': message})
     return messages
 
 
 if __name__ == '__main__':
     file_path = 'my_matrix_file.json'
-    for message_dict in create_json_from_file(file_path):
+    restart_timestamp = 0
+    for message_dict in create_json_from_file(file_path, min_timestamp=restart_timestamp):
         process_matrix_dict(message_dict)
