@@ -1,0 +1,6 @@
+[AIL]
+feeder_uuid = 36937e44-b628-4e8d-9f55-0bbe93d71720
+
+url = https://127.0.0.1:7000
+apikey = <YOURAPIKEY>
+verifycert = False
