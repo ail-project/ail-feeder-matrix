@@ -112,7 +112,8 @@ def create_json_from_file(f_path, min_timestamp=0):
                 chat_id = d[1].replace(b'    chat_id: ', b'', 1)[:-1].decode()
                 sender = d[2].replace(b'    sender_alias: ', b'', 1)[:-1].decode()
                 message = d[3].replace(b'    message: ', b'', 1)[:-2]
-                if int(timestamp) > min_timestamp:
+                time_timestamp = time.mktime(datetime.strptime(timestamp, "%Y-%m-%d %H:%M:%S").utctimetuple())
+                if int(time_timestamp) > min_timestamp:
                     messages.append({'timestamp': timestamp, 'chat_id': chat_id, 'sender_alias': sender, 'message': message})
                 # print({'timestamp': timestamp, 'chat_id': chat_id, 'sender_alias': sender, 'message': message})
     return messages
